@@ -11,6 +11,8 @@ declare -r grayColour="\e[0;37m\033[1m"
 
 which weevely 1>/dev/null
 var1=$(echo $?)
+which rlwrap 1>/dev/null
+var2=$(echo $?)
 whoami=$(whoami)
 
 trap ctrl_c INT
@@ -50,7 +52,7 @@ function Ejecucion(){
 	read -p "Indiquenos su URL shell (EXAMPLE: http://x.x.x.x/uploads/r_shell.php): " url 
 	echo -ne "${turquoiseColour}[V] ${endColour}"
 	read -p "Cual es su contraseña? (EXAMPLE: password): " password
-	weevely $url $password
+	rlwrap weevely $url $password
 }
 
 function Creacion(){
@@ -68,7 +70,7 @@ function Creacion(){
 	if [ $respuesta2 == "S" ]; then
 		echo -ne "${turquoiseColour}[V] ${endColour}"
         	read -p "Indiquenos su URL shell (EXAMPLE: http://x.x.x.x/uploads/r_shell.php): " url 
-        	weevely $url $name_pass
+        	rlwrap weevely $url $name_pass
 	fi
 
 	if [ $respuesta2 == "n" ]; then
@@ -83,10 +85,14 @@ if [ $(id -u $whoami) -eq "0" ]; then
 
 	if [ $var1 -ne 0 ] ; then
 		echo -e "\n${redColour}[X] ${endColour}No tiene instalado: ${yellowColour}Weevely${endColour}\n${purpleColour}${greenColour}[*] ${endColour}Procediendo a la instalación..${endColour}\n"
+		if [ $var2 -ne 0 ] ; then
+		echo -e "\n${redColour}[X] ${endColour}No tiene instalado: ${yellowColour}rlwrap${endColour}\n${purpleColour}${greenColour}[*] ${endColour}Procediendo a la instalación..${endColour}\n"
 		echo -e "\n${turquoiseColour}[*] Instalando...${endColour}"
 		apt install weevely -y > /dev/null 2>&1
+		apt install rlwrap -y > /dev/null 2>&1
 		echo -e "\n${greenColour}[V] ${endColour}Listo!\n"
 		Pregunta
+		fi
 	else
 		Pregunta
 	fi
